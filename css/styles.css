@@ -124,6 +124,79 @@ p {
     box-shadow: 0 6px 12px rgba(59, 130, 246, 0.3);
 }
 
+.btn-primary:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* ===================================
+   Top Header Bar - NEW
+   =================================== */
+.top-header {
+    background-color: var(--color-primary-dark);
+    color: white;
+    padding: 0.75rem 0;
+    font-size: 0.875rem;
+}
+
+.top-header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.contact-info-top {
+    display: flex;
+    align-items: center;
+}
+
+.phone-link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: white;
+    text-decoration: none;
+    transition: color var(--transition-fast);
+}
+
+.phone-link:hover {
+    color: var(--color-accent);
+}
+
+.phone-link svg {
+    width: 18px;
+    height: 18px;
+}
+
+.social-links-top {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.social-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 0.375rem;
+    color: white;
+    transition: all var(--transition-medium);
+}
+
+.social-icon:hover {
+    background-color: var(--color-accent);
+    transform: translateY(-2px);
+}
+
+.social-icon svg {
+    width: 16px;
+    height: 16px;
+}
+
 /* ===================================
    Navigation
    =================================== */
@@ -210,7 +283,7 @@ p {
 }
 
 /* ===================================
-   Hero Section
+   Hero Section - Moving Theme with Background Image
    =================================== */
 .hero {
     position: relative;
@@ -221,6 +294,19 @@ p {
     background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
     color: white;
     overflow: hidden;
+}
+
+/* Moving-themed background image styling */
+.hero-bg-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800"><defs><linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:rgb(30,58,138);stop-opacity:0.9" /><stop offset="100%" style="stop-color:rgb(59,130,246);stop-opacity:0.9" /></linearGradient></defs><rect fill="url(%23grad1)" width="1200" height="800"/><g opacity="0.1"><rect x="100" y="200" width="200" height="150" fill="white" rx="5"/><rect x="350" y="180" width="180" height="180" fill="white" rx="5"/><rect x="580" y="220" width="160" height="140" fill="white" rx="5"/><circle cx="200" cy="600" r="40" fill="white"/><circle cx="500" cy="620" r="35" fill="white"/><path d="M150 450 L250 450 L250 520 L200 560 L150 520 Z" fill="white"/><path d="M800 300 L900 300 Q920 300 920 320 L920 420 Q920 440 900 440 L800 440 Q780 440 780 420 L780 320 Q780 300 800 300" fill="white"/></g></svg>');
+    background-size: cover;
+    background-position: center;
+    opacity: 0.3;
 }
 
 .hero-overlay {
@@ -591,19 +677,35 @@ p {
     min-height: 1.25rem;
 }
 
-.form-success {
+/* Form Success and Error Messages - Enhanced */
+.form-success,
+.form-error {
     display: none;
     padding: 1rem;
-    background-color: #10b981;
-    color: white;
     border-radius: 0.5rem;
     margin-top: var(--spacing-md);
     text-align: center;
 }
 
-.form-success.show {
+.form-success {
+    background-color: #10b981;
+    color: white;
+}
+
+.form-error {
+    background-color: #ef4444;
+    color: white;
+}
+
+.form-success.show,
+.form-error.show {
     display: block;
     animation: slideIn 0.5s ease;
+}
+
+/* Button Loader State */
+.btn-loader {
+    display: inline-block;
 }
 
 @keyframes slideIn {
@@ -716,6 +818,17 @@ p {
 
 /* Tablet */
 @media (max-width: 768px) {
+    /* Top Header Responsive */
+    .top-header-content {
+        flex-direction: column;
+        gap: 0.75rem;
+        text-align: center;
+    }
+    
+    .social-links-top {
+        justify-content: center;
+    }
+    
     .nav-menu {
         position: fixed;
         top: 70px;
@@ -777,6 +890,14 @@ p {
     
     .container {
         padding: 0 var(--spacing-sm);
+    }
+    
+    .top-header {
+        font-size: 0.8rem;
+    }
+    
+    .phone-link span {
+        font-size: 0.85rem;
     }
     
     .services-grid {

@@ -1,4 +1,14 @@
 // ===================================
+// EmailJS Initialization
+// ===================================
+// Initialize EmailJS with your public key
+// IMPORTANT: Replace 'YOUR_PUBLIC_KEY' with your actual EmailJS public key
+// Get it from: https://dashboard.emailjs.com/admin/account
+(function() {
+    emailjs.init("YOUR_PUBLIC_KEY"); // Replace with your EmailJS public key
+})();
+
+// ===================================
 // Smooth Scrolling Navigation
 // ===================================
 document.addEventListener('DOMContentLoaded', function() {
@@ -74,13 +84,16 @@ window.addEventListener('scroll', function() {
 });
 
 // ===================================
-// Form Validation and Submission
+// Form Validation and Submission with EmailJS
 // ===================================
 const contactForm = document.getElementById('contactForm');
 const nameInput = document.getElementById('name');
 const emailInput = document.getElementById('email');
+const phoneInput = document.getElementById('phone'); // New phone input
 const messageInput = document.getElementById('message');
 const formSuccess = document.getElementById('formSuccess');
+const formError = document.getElementById('formError'); // New error message
+const submitBtn = document.getElementById('submitBtn');
 
 // Validation functions
 function validateName(name) {
@@ -90,6 +103,14 @@ function validateName(name) {
 function validateEmail(email) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
+}
+
+// New phone validation function
+function validatePhone(phone) {
+    // Remove all non-digit characters
+    const cleanPhone = phone.replace(/\D/g, '');
+    // Check if phone has 8-15 digits (accommodates various formats)
+    return cleanPhone.length >= 8 && cleanPhone.length <= 15;
 }
 
 function validateMessage(message) {
@@ -125,6 +146,21 @@ emailInput.addEventListener('blur', function() {
     }
 });
 
+// Phone number validation on blur
+phoneInput.addEventListener('blur', function() {
+    if (!validatePhone(this.value)) {
+        showError('phone', 'Please enter a valid phone number (8-15 digits)');
+    } else {
+        clearError('phone');
+    }
+});
+
+// Allow only numbers, spaces, hyphens, and parentheses in phone input
+phoneInput.addEventListener('input', function(e) {
+    // Allow numbers, spaces, +, -, (, )
+    this.value = this.value.replace(/[^0-9\s\-\+\(\)]/g, '');
+});
+
 messageInput.addEventListener('blur', function() {
     if (!validateMessage(this.value)) {
         showError('message', 'Please enter a message (at least 10 characters)');
@@ -133,18 +169,22 @@ messageInput.addEventListener('blur', function() {
     }
 });
 
-// Form submission
+// Form submission with EmailJS
 contactForm.addEventListener('submit', function(e) {
     e.preventDefault();
     
-    // Clear previous errors
+    // Clear previous errors and messages
     clearError('name');
     clearError('email');
+    clearError('phone');
     clearError('message');
+    formSuccess.classList.remove('show');
+    formError.classList.remove('show');
     
     // Get form values
     const name = nameInput.value;
     const email = emailInput.value;
+    const phone = phoneInput.value;
     const message = messageInput.value;
     
     // Validation flags
@@ -162,27 +202,80 @@ contactForm.addEventListener('submit', function(e) {
         isValid = false;
     }
     
+    // Validate phone
+    if (!validatePhone(phone)) {
+        showError('phone', 'Please enter a valid phone number (8-15 digits)');
+        isValid = false;
+    }
+    
     // Validate message
     if (!validateMessage(message)) {
         showError('message', 'Please enter a message (at least 10 characters)');
         isValid = false;
     }
     
-    // If form is valid, show success message
+    // If form is valid, send email via EmailJS
     if (isValid) {
-        // In a real application, you would send the data to a server here
-        console.log('Form submitted:', { name, email, message });
+        // Disable submit button and show loading state
+        submitBtn.disabled = true;
+        submitBtn.querySelector('.btn-text').style.display = 'none';
+        submitBtn.querySelector('.btn-loader').style.display = 'inline-block';
         
-        // Show success message
-        formSuccess.classList.add('show');
+        // EmailJS service configuration
+        // IMPORTANT: Replace these with your actual EmailJS credentials
+        // 1. Create account at https://www.emailjs.com/
+        // 2. Add email service (Gmail, Outlook, etc.)
+        // 3. Create email template with variables: {{from_name}}, {{from_email}}, {{phone}}, {{message}}
+        // 4. Get your Service ID, Template ID, and Public Key
         
-        // Reset form
-        contactForm.reset();
+        const serviceID = 'YOUR_SERVICE_ID'; // Replace with your EmailJS service ID
+        const templateID = 'YOUR_TEMPLATE_ID'; // Replace with your EmailJS template ID
         
-        // Hide success message after 5 seconds
-        setTimeout(function() {
-            formSuccess.classList.remove('show');
-        }, 5000);
+        // Template parameters matching your EmailJS template
+        const templateParams = {
+            from_name: name,
+            from_email: email,
+            phone: phone,
+            message: message,
+            to_email: 'me.nkj7@gmail.com' // Your email address
+        };
+        
+        // Send email using EmailJS
+        emailjs.send(serviceID, templateID, templateParams)
+            .then(function(response) {
+                console.log('SUCCESS!', response.status, response.text);
+                
+                // Show success message
+                formSuccess.classList.add('show');
+                
+                // Reset form
+                contactForm.reset();
+                
+                // Re-enable submit button
+                submitBtn.disabled = false;
+                submitBtn.querySelector('.btn-text').style.display = 'inline-block';
+                submitBtn.querySelector('.btn-loader').style.display = 'none';
+                
+                // Hide success message after 5 seconds
+                setTimeout(function() {
+                    formSuccess.classList.remove('show');
+                }, 5000);
+            }, function(error) {
+                console.log('FAILED...', error);
+                
+                // Show error message
+                formError.classList.add('show');
+                
+                // Re-enable submit button
+                submitBtn.disabled = false;
+                submitBtn.querySelector('.btn-text').style.display = 'inline-block';
+                submitBtn.querySelector('.btn-loader').style.display = 'none';
+                
+                // Hide error message after 5 seconds
+                setTimeout(function() {
+                    formError.classList.remove('show');
+                }, 5000);
+            });
     }
 });
 
