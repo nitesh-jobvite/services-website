@@ -843,9 +843,22 @@ p {
         justify-content: center;
     }
     
+    body {
+        padding-top: 130px;
+    }
+    
+    .navbar {
+        top: 60px;
+    }
+    
+    .hero {
+        margin-top: -130px;
+        padding-top: 130px;
+    }
+    
     .nav-menu {
         position: fixed;
-        top: 118px;
+        top: 130px;
         left: -100%;
         width: 100%;
         flex-direction: column;
@@ -902,30 +915,30 @@ p {
         --spacing-xl: 3rem;
     }
     
+    .top-header {
+        font-size: 0.8rem;
+        padding: 0.5rem 0;
+    }
+    
     body {
-        padding-top: 110px;
+        padding-top: 105px;
     }
     
     .navbar {
-        top: 44px;
+        top: 42px;
     }
     
     .hero {
-        margin-top: -110px;
-        padding-top: 110px;
+        margin-top: -105px;
+        padding-top: 105px;
     }
     
     .nav-menu {
-        top: 110px;
+        top: 105px;
     }
     
     .container {
         padding: 0 var(--spacing-sm);
-    }
-    
-    .top-header {
-        font-size: 0.8rem;
-        padding: 0.5rem 0;
     }
     
     .phone-link span {
