@@ -848,21 +848,21 @@ p {
     }
     
     body {
-        padding-top: 140px;
+        padding-top: 150px;
     }
     
     .navbar {
-        top: 70px;
+        top: 78px;
     }
     
     .hero {
-        margin-top: -140px;
-        padding-top: 140px;
+        margin-top: -150px;
+        padding-top: 150px;
     }
     
     .nav-menu {
         position: fixed;
-        top: 140px;
+        top: 150px;
         left: -100%;
         width: 100%;
         flex-direction: column;
@@ -871,7 +871,7 @@ p {
         padding: var(--spacing-md);
         gap: 0;
         transition: left var(--transition-medium);
-        max-height: calc(100vh - 140px);
+        max-height: calc(100vh - 150px);
         overflow-y: auto;
     }
     
@@ -927,21 +927,21 @@ p {
     }
     
     body {
-        padding-top: 115px;
+        padding-top: 125px;
     }
     
     .navbar {
-        top: 50px;
+        top: 58px;
     }
     
     .hero {
-        margin-top: -115px;
-        padding-top: 115px;
+        margin-top: -125px;
+        padding-top: 125px;
     }
     
     .nav-menu {
-        top: 115px;
-        max-height: calc(100vh - 115px);
+        top: 125px;
+        max-height: calc(100vh - 125px);
         overflow-y: auto;
     }
     
